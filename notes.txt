@@ -1,73 +1,10 @@
-`mod = sm.Logit(df_new['converted'], df_new[['intercept', 'US', 'CA']]`
-
-`results = mod.fit()`
-
-`results.summary()`
-
-
-p_diffs = []
-for _ in range(10000):
-   new_page_converted = np.random.binomial(n_new,p_new)
-  
- old_page_converted = np.random.binomial(n_old, p_old)
-   diff = new_page_converted/n_new - old_page_converted/n_old
-   p_diffs.append(diff)
+Focusing on statistical significance (e.g., P value < .05) is misguided.
+ You did not tell us how much the regression coefficients changed, 
+ when age was added to the model. Did they also reverse signs?
+  What is the interpretation of the coefficients when age is in the model? If it makes more sense to adjust for age
+  , then I would not worry about the model w/o the age term.
+ These are more important to think about than obsessing over the magnitude of P values.
 
 
-Regarding
-Data Analyst Nanodegree - Lesson 15: Multiple Linear Regression - 7. Quiz Interpreting Coefficients in MLR - 
-Question 3 of 3 
-Based on the results of your multiple linear regression model, 
-which of the below would be correct interpretations? Mark all that apply.
-
-I need help with this
- correct choice
-We could continue to add variables to this model, 
-and the interpretation of these coefficients would basically stay the same, 
-but we would add more variables to the "held constant" portion of the interpretation.
-
-The lessons clearly showed examples of the impact of adding  a quantitative variables.  For example when the explanatory variable number of bathrooms
-was studied alone  the p value was low indicating statistical significance.  When the quantitative variables were studied in the aggregate the p value associated with 
-the number of bathrooms spiked indicating - fail to reject the the null.  Summary a quantitative explanatory variable was added and the coefficients
-changed.  The above answer indicates the coefficients would basically stay the same.  Was there a lesson, video addressing this?
-
-Udacity support referenced  - random.binomial approach in Lesson 8, Section 4.   I am revisiting that lesson in regards to this topic.
-
-
-new_page_converted = np.random.choice(df2.converted,n_new, p_new)
-new_count = df2.query("group == 'treatment'  and  landing_page == 'new_page' ").shape[0]
-
-print("new_count - {}".format(new_count))
-
-new_converted_count = df2.query("group == 'treatment' and landing_page == 'new_page' and converted == 1").shape[0]
-
-print("new_converted_count - {}".format(new_converted_count))
-
-
-observed_convert_rate = new_converted_count / new_count
-print("observed_convert_rate - {}".format(observed_convert_rate))
-
-
-
-Thank you. I think, I figured it out. From 2.Quiz 1. I was looking at the sum where the specific values did not align. 
-But really they are looking for both ways. 
-New_page <> treatment
-old_page <> control
-
-df_row_count = df.shape[0]
-print("df_row_count - {}".format(df_row_count))
-
-df2 = df.query("(group == 'control' and landing_page == 'old_page') or (group == 'treatment' and landing_page == 'new_page')") 
-df2_row_count = df2.shape[0]
-print("df2_row_count - {}".format(df2_row_count))z
-
-
-
-
-
-df_row_count = df.shape[0]
-print("df_row_count - {}".format(df_row_count))
-
-df2 = df.query("(group == 'control' and landing_page == 'old_page') or (group == 'treatment' and landing_page == 'new_page')") 
-df2_row_count = df2.shape[0]
-print("df2_row_count - {}".format(df2_row_count))
+ There are several possible causes. First, there are independent variables that are correlated (multicollinearity). Correlated variables can be detected by using the VIF (variance inflation factor) statistics of full regression models. Independent variables with high VIF were the cause multicollinearity. Second, select the best regression model use a stepwise regression or best subset regression, etc. 
+ Independent variables that should theoretically exist in the model needs to be maintained in the selection of the best model.
